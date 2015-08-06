@@ -31,7 +31,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Jones\\VisitorLog": "src/"
+            "SourceQuartet\\VisitorLog": "src/"
         }
     },
     "minimum-stability": "stable"
