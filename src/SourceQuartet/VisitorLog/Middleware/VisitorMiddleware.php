@@ -1,44 +1,33 @@
 <?php namespace SourceQuartet\VisitorLog\Middleware;
+use Carbon\Carbon;
 use Closure;
-use SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager;
-use Illuminate\Config\Repository as Config;
-use Illuminate\Contracts\Auth\Guard as Auth;
+use Illuminate\Support\Facades\Auth;
+use SourceQuartet\VisitorLog\VisitorLogFacade as Visitor;
 
 class VisitorMiddleware
 {
-    private $visitor;
-    private $config;
-    private $auth;
-    public function __construct(VisitorManager $visitorManager,
-                                Config $config,
-                                Auth $auth)
-    {
-        $this->visitor = $visitorManager;
-        $this->config = $config;
-        $this->auth = $auth;
-    }
 
     public function handle($request, Closure $next)
     {
         // First clear out all "old" visitors
-        $this->visitor->clear();
+        Visitor::clear(new Carbon, config('visitor-log::onlinetime'));
 
         $page = $request->path();
-        $ignore = $this->config->get('visitor-log::ignore');
+        $ignore = config('visitor-log::ignore');
         if(is_array($ignore) && in_array($page, $ignore))
             //We ignore this site
             return;
 
-        $visitor = $this->visitor->findCurrent();
+        $visitor = Visitor::findCurrent();
 
         $user = null;
-        $usermodel = strtolower($this->config->get('visitor-log::usermodel'));
-        if($usermodel == "auth" && $this->auth->check())
+        $usermodel = strtolower(config('visitor-log::usermodel'));
+        if($usermodel == "auth" && Auth::check())
         {
             $user = Auth::user()->id;
         }
 
-        $this->visitor->updateOrCreate([
+        Visitor::updateOrCreate([
             'ip' => $request->getClientIp(),
             'useragent' => $request->server('HTTP_USER_AGENT'),
             'sid' => str_random(25),

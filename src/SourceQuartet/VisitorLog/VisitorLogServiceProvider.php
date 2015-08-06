@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager;
+use SourceQuartet\VisitorLog\Repositories\Visitor\VisitorRepository;
 
 class VisitorLogServiceProvider extends ServiceProvider {
 
@@ -19,19 +20,21 @@ class VisitorLogServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->loadViewsFrom(__DIR__.'../../views/', 'visitor-log');
+		$this->loadViewsFrom(dirname(dirname(__DIR__)).'/views/', 'visitor-log');
 
 		$this->publishes([
-			__DIR__.'../../views/' => base_path('resources/views/vendor/visitor-log'),
+			dirname(dirname(__DIR__)).'/views/' => base_path('resources/views/vendor/visitor-log'),
 		]);
 
         $this->publishes([
-            __DIR__.'../../config/visitor-log.php' => config_path('visitor-log.php'),
+			dirname(dirname(__DIR__)).'/config/visitor-log.php' => config_path('visitor-log.php'),
         ]);
 
         $this->publishes([
-            __DIR__.'../../migrations/' => database_path('migrations')
+			dirname(dirname(__DIR__)).'/migrations/' => database_path('migrations')
         ], 'migrations');
+
+		$this->app->bind('SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager', 'SourceQuartet\VisitorLog\Repositories\Visitor\Visitor');
 	}
 
 	/**
@@ -42,10 +45,14 @@ class VisitorLogServiceProvider extends ServiceProvider {
 	public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'../../config/visitor-log.php', 'visitor-log'
+			dirname(dirname(__DIR__)).'/config/visitor-log.php', 'visitor-log'
         );
 
-        $this->app->bind('SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager', 'SourceQuartet\VisitorLog\Repositories\Visitor\Visitor');
+        $this->app->bind('SourceQuartet\VisitorLog\Repositories\Visitor\Visitor', 'SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager');
+        $this->app->bind('visitor', function()
+        {
+            return new VisitorManager(new VisitorRepository(new Visitor()), $this->app['session.store'], $this->app['config']);
+        });
 	}
 
 	/**

@@ -37,7 +37,7 @@ interface Visitor
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function clear($time = null, Carbon $carbon);
+    public function clear(Carbon $carbon, $time = null);
 
     /**
      * @return mixed

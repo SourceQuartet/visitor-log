@@ -1,7 +1,7 @@
 <?php namespace SourceQuartet\VisitorLog;
 use Illuminate\Support\Facades\Facade;
 
-class Visitor extends Facade {
+class VisitorLogFacade extends Facade {
 
     protected static function getFacadeAccessor() { return 'visitor'; }
 

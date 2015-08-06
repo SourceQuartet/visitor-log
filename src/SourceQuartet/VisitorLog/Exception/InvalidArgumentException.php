@@ -1,4 +1,4 @@
-<?php namespace SourceQuartet\Exception;
+<?php namespace SourceQuartet\VisitorLog\Exception;
 
 class InvalidArgumentException extends \Exception
 {

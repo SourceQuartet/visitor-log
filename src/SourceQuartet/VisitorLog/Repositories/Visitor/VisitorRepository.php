@@ -2,7 +2,7 @@
 use Carbon\Carbon;
 use SourceQuartet\Exception\InvalidArgumentException;
 use SourceQuartet\VisitorLog\Useragent;
-use SourceQuartet\VisitorLog\Visitor;
+use SourceQuartet\VisitorLog\Visitor as VisitorModel;
 use \SourceQuartet\VisitorLog\Contracts\Visitor\VisitorContract;
 
 /**
@@ -17,9 +17,9 @@ class VisitorRepository implements VisitorContract
     private $model;
 
     /**
-     * @param Visitor $visitorModel
+     * @param VisitorModel $visitorModel
      */
-    public function __construct(Visitor $visitorModel)
+    public function __construct(VisitorModel $visitorModel)
     {
         $this->model = $visitorModel;
     }

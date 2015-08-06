@@ -4,7 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Session\Store as Session;
 use SourceQuartet\VisitorLog\Useragent;
-use SourceQuartet\Exception\InvalidArgumentException;
+use SourceQuartet\VisitorLog\Exception\InvalidArgumentException;
 class VisitorManager implements Visitor
 {
     /**
@@ -46,7 +46,7 @@ class VisitorManager implements Visitor
             throw new InvalidArgumentException('The attributes argument should be an array');
         }
 
-        return $this->model->create($attributes);
+        return $this->visitorRepository->create($attributes);
     }
 
     /**
@@ -61,7 +61,7 @@ class VisitorManager implements Visitor
             throw new InvalidArgumentException('The attributes argument should be an array');
         }
 
-        return $this->model->updateOrCreate($attributes);
+        return $this->visitorRepository->updateOrCreate($attributes);
     }
 
     /**
@@ -97,16 +97,11 @@ class VisitorManager implements Visitor
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function clear($time = null, Carbon $carbon)
+    public function clear(Carbon $carbon, $time = null)
     {
         if(is_null($time))
         {
             $this->config->get('visitor-log::onlinetime');
-        }
-
-        if(!is_int($time) || $time < 1)
-        {
-            throw new InvalidArgumentException('The time parameter should be and integer and superior to 1');
         }
 
         return $this->visitorRepository->clear($time, $carbon);
