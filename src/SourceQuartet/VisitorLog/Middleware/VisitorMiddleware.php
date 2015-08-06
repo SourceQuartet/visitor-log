@@ -17,6 +17,8 @@ class VisitorMiddleware
         if(is_array($ignore) && in_array($page, $ignore))
             //We ignore this site
             return;
+        
+        $sid = str_random(25);
 
         $visitor = Visitor::findCurrent();
 
@@ -26,14 +28,19 @@ class VisitorMiddleware
         {
             $user = Auth::user()->id;
         }
+        
+        if(!visitor)
+        {
+            Visitor::setSidAttribute($sid)
 
-        Visitor::updateOrCreate([
-            'ip' => $request->getClientIp(),
-            'useragent' => $request->server('HTTP_USER_AGENT'),
-            'sid' => str_random(25),
-            'user' => $user,
-            'page' => $page
-        ]);
+            Visitor::updateOrCreate([
+                'ip' => $request->getClientIp(),
+                'useragent' => $request->server('HTTP_USER_AGENT'),
+                'sid' => $sid,
+                'user' => $user,
+                'page' => $page
+            ]);
+        }
 
         return $next($request);
     }
