@@ -1,4 +1,6 @@
 # VisitorLog for Laravel 5
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/badges/build.png?b=master)](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/build-status/master)
+
 
 A K.I.S.S package to log your Visitor for your Laravel 5 apps.
 
