@@ -113,7 +113,7 @@ class VisitorRepository implements VisitorContract
      */
     public function isGuest()
     {
-        return ($this->user == 0);
+        return ($this->model->getAttribute('user') == 0);
     }
 
     /**
