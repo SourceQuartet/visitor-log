@@ -65,6 +65,20 @@ class VisitorManager implements Visitor
     {
         return $this->request->session();
     }
+    
+    /**
+     * @param array $columns
+     * @return Collection
+     */
+    public function all(array $columns = ['*'])
+    {
+        if(!is_array($id))
+        {
+            throw new InvalidArgumentException('The argument columns should be an array');
+        }
+        
+        $this->visitorRepository()->all($columns);
+    }
 
     /**
      * @param null $id
