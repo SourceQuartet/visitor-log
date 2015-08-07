@@ -30,7 +30,7 @@ Also you can add the Facade for Visitor class :
 ```php
 'aliases' => [
 
-	'Visitor'		  => SourceQuartet\VisitorLog\VisitorLogFacade::class,
+	'Visitor' => SourceQuartet\VisitorLog\VisitorLogFacade::class,
 
 ],
 ```
