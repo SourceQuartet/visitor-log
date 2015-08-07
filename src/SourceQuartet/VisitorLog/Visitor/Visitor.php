@@ -74,12 +74,6 @@ interface Visitor
      * @return bool
      */
     public function isUser();
-
-    /**
-     * @return null|Useragent
-     */
-    public function getAgentAttribute();
-
     /**
      * @param null $value
      * @throws InvalidArgumentException
@@ -87,60 +81,12 @@ interface Visitor
     public function setSidAttribute($value = null);
 
     /**
-     * @return mixed|string
+     * Set Agent Detector
      */
-    public function getAgentsAttribute();
+    public function setAgentDetector();
 
     /**
-     * @param null $key
-     * @return null
+     * @return bool
      */
-    public function is_browser($key = null);
-
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_robot($key = null);
-
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_mobile($key = null);
-
-    /**
-     * @return null
-     */
-    public function is_referral();
-
-    /**
-     * @return null
-     */
-    public function getPlatformAttribute();
-
-    /**
-     * @return null
-     */
-    public function getBrowserAttribute();
-
-    /**
-     * @return null
-     */
-    public function getVersionAttribute();
-
-    /**
-     * @return null
-     */
-    public function getRobotAttribute();
-
-    /**
-     * @return null
-     */
-    public function getMobileAttribute();
-
-    /**
-     * @return null
-     */
-    public function getReferrerAttribute();
+    public function getUseragent();
 }

@@ -64,70 +64,13 @@ interface VisitorContract
     public function isGuest();
 
     /**
-     * @return null|Useragent
-     */
-    public function getAgentAttribute();
-
-    /**
-     * @return mixed|string
-     */
-    public function getAgentsAttribute();
-
-    /**
      * @param $value
      */
     public function setSidAttribute($value);
 
     /**
-     * @param null $key
-     * @return null
+     * @param null $id
+     * @return mixed
      */
-    public function is_browser($key = null);
-
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_robot($key = null);
-
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_mobile($key = null);
-
-    /**
-     * @return null
-     */
-    public function is_referral();
-
-    /**
-     * @return null
-     */
-    public function getPlatformAttribute();
-
-    /**
-     * @return null
-     */
-    public function getBrowserAttribute();
-
-    /**
-     * @return null
-     */
-    public function getVersionAttribute();
-
-    /**
-     * @return null
-     */
-    public function getRobotAttribute();
-
-    /**
-     * @return null
-     */
-    public function getMobileAttribute();
-
-    /**
-     * @return null
-     */
-    public function getReferrerAttribute();
+    public function getUseragent($id = null);
 }

@@ -5,6 +5,7 @@ use Illuminate\Config\Repository as Config;
 use Illuminate\Session\Store as Session;
 use SourceQuartet\VisitorLog\Useragent;
 use SourceQuartet\VisitorLog\Exception\InvalidArgumentException;
+use DeviceDetector\DeviceDetector;
 class VisitorManager implements Visitor
 {
     /**
@@ -21,6 +22,11 @@ class VisitorManager implements Visitor
     protected $config;
 
     /**
+     * @var DeviceDetector
+     */
+    protected $agentDetector;
+
+    /**
      * @param VisitorRepository $visitorRepository
      * @param Session $session
      * @param Config $config
@@ -32,6 +38,24 @@ class VisitorManager implements Visitor
         $this->visitorRepository = $visitorRepository;
         $this->session = $session;
         $this->config = $config;
+        $this->setAgentDetector();
+
+    }
+
+    /**
+     * Set Agent Detector
+     */
+    public function setAgentDetector()
+    {
+        $this->agentDetector = new DeviceDetector($this->getUseragent());
+    }
+
+    /**
+     * @return DeviceDetector
+     */
+    public function getAgentDetector()
+    {
+        return $this->agentDetector;
     }
 
     /**
@@ -176,14 +200,6 @@ class VisitorManager implements Visitor
     }
 
     /**
-     * @return null|Useragent
-     */
-    public function getAgentAttribute()
-    {
-        return $this->visitorRepository->getAgentAttribute();
-    }
-
-    /**
      * @param null $value
      * @throws InvalidArgumentException
      */
@@ -199,93 +215,14 @@ class VisitorManager implements Visitor
     }
 
     /**
-     * @return mixed|string
+     * @return bool
      */
-    public function getAgentsAttribute()
+    public function getUseragent()
     {
-        return $this->visitorRepository->getAgentsAttribute();
-    }
+        if(!$this->session->has('visitor_log_sid'))
+            return false;
 
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_browser($key = null)
-    {
-        return $this->visitorRepository->is_browser($key);
-    }
-
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_robot($key = null)
-    {
-        return $this->visitorRepository->is_robot($key);
-    }
-
-    /**
-     * @param null $key
-     * @return null
-     */
-    public function is_mobile($key = null)
-    {
-        return $this->visitorRepository->is_mobile($key);
-    }
-
-    /**
-     * @return null
-     */
-    public function is_referral()
-    {
-        return $this->visitorRepository->is_referral();
-    }
-
-    /**
-     * @return null
-     */
-    public function getPlatformAttribute()
-    {
-        return $this->visitorRepository->getPlatformAttribute();
-    }
-
-    /**
-     * @return null
-     */
-    public function getBrowserAttribute()
-    {
-        return $this->visitorRepository->getBrowserAttribute();
-    }
-
-    /**
-     * @return null
-     */
-    public function getVersionAttribute()
-    {
-        return $this->visitorRepository->getVersionAttribute();
-    }
-
-    /**
-     * @return null
-     */
-    public function getRobotAttribute()
-    {
-        return $this->visitorRepository->getRobotAttribute();
-    }
-
-    /**
-     * @return null
-     */
-    public function getMobileAttribute()
-    {
-        return $this->visitorRepository->getMobileAttribute();
-    }
-
-    /**
-     * @return null
-     */
-    public function getReferrerAttribute()
-    {
-        return $this->visitorRepository->getReferrerAttribute();
+        $sid = $this->session->get('visitor_log_sid');
+        return $this->visitorRepository->getUseragent($sid);
     }
 }
