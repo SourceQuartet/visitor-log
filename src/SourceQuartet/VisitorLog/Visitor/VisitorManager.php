@@ -209,6 +209,14 @@ class VisitorManager implements Visitor
     {
         return $this->visitorRepository->isUser();
     }
+    
+    /**
+     * @return bool
+     */
+    public function isGuest()
+    {
+        return $this->visitorRepository->isGuest();
+    }
 
     /**
      * @return bool
