@@ -7,6 +7,12 @@ use SourceQuartet\VisitorLog\Useragent;
 interface Visitor
 {
     /**
+     * @param array $columns
+     * @return Collection
+     */
+    public function all(array $columns = ['*'])
+    
+    /**
      * @param null $id
      * @return mixed
      * @throws InvalidArgumentException
