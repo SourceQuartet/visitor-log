@@ -21,11 +21,21 @@ class VisitorRepository implements VisitorContract
     /**
      * @param VisitorModel $visitorModel
      * @param DatabaseManager $databaseManager
-     */public function __construct(VisitorModel $visitorModel,
+     */
+    public function __construct(VisitorModel $visitorModel,
                                 DatabaseManager $databaseManager)
     {
         $this->model = $visitorModel;
         $this->db = $databaseManager;
+    }
+    
+    /**
+     * @param array $columns
+     * @return Collection
+     */
+    public function all(array $columns = ['*'])
+    {
+        return $this->model->all($columns);
     }
 
     /**
