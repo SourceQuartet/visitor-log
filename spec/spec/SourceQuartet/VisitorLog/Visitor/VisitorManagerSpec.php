@@ -46,4 +46,34 @@ class VisitorManagerSpec extends ObjectBehavior
 
         $this->checkOnline($visitor->user)->shouldReturn(true);
     }
+
+    public function it_find_visitor_when_visitor_sid_isset_on_session(VisitorRepository $visitorRepository,
+                                                                        Session $sessionStore)
+    {
+        $visitor = new VisitorModel;
+        $visitor->sid = str_random(25);
+        $sessionStore->set('visitor_log_sid', $visitor->sid);
+
+        $sessionStore->has('visitor_log_sid')->shouldBeCalled()
+            ->willReturn(true);
+
+        $sessionStore->get('visitor_log_sid')->shouldBeCalled()
+            ->willReturn($visitor->sid);
+
+        $visitorRepository->find($visitor->sid)->shouldBeCalled()
+            ->willReturn($visitor);
+
+        $this->findCurrent()->shouldReturnAnInstanceOf(VisitorModel::class);
+    }
+
+    public function it_find_visitor_when_visitor_sid_is_not_set_on_session(Session $sessionStore)
+    {
+        $visitor = new VisitorModel;
+        $visitor->sid = str_random(25);
+
+        $sessionStore->has('visitor_log_sid')->shouldBeCalled()
+            ->willReturn(false);
+
+        $this->findCurrent()->shouldReturn(false);
+    }
 }
