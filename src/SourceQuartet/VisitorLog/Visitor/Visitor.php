@@ -73,6 +73,11 @@ interface Visitor
      * @return bool
      */
     public function isUser();
+    
+    /**
+     * @return bool
+     */
+    public function isGuest();
 
     /**
      * Set Agent Detector
