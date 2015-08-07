@@ -110,7 +110,10 @@ Visitor::findByIp($id);
  */
 Visitor::isUser();
 Visitor::isGuest();
-Visitor:: getUseragent();
+Visitor::getUseragent();
+
+// Fetch all visitor logged into the database.
+Visitor::all();
 
 // Should not be used out of the scope of a Custom Middleware of for testing purposes.
 Visitor::create(array $attributes);
@@ -154,6 +157,3 @@ The Visitor Model also provides some attributes:
  * `page`: The Page where the visitor is
  * `useragent`: The useragent of the visitor
  * `user`: The UserID of the visitor
- 
-## What's with an "Who's online page"?
-It's really easy to add one by yourself but Visitor-Log provides you already a very simple one: simply add `@include("visitor-log::online")` to your blade template where you want. And the best: It's ready to look nice with bootstrap
