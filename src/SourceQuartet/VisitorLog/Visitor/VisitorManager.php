@@ -1,11 +1,9 @@
 <?php namespace SourceQuartet\VisitorLog\Visitor;
 
-use Carbon\Carbon;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
-use SourceQuartet\VisitorLog\Useragent;
+use Jenssegers\Agent\Agent;
 use SourceQuartet\VisitorLog\Exception\InvalidArgumentException;
-use DeviceDetector\DeviceDetector;
 class VisitorManager implements Visitor
 {
     /**
@@ -39,6 +37,7 @@ class VisitorManager implements Visitor
         $this->request = $request;
         $this->config = $config;
         $this->setAgentDetector();
+
     }
 
     /**
@@ -46,7 +45,7 @@ class VisitorManager implements Visitor
      */
     public function setAgentDetector()
     {
-        $this->agentDetector = new DeviceDetector($this->getUseragent());
+        $this->agentDetector = new Agent();
     }
 
     /**
@@ -216,11 +215,13 @@ class VisitorManager implements Visitor
      */
     public function getUseragent()
     {
-        if(!$this->getSession()->has('visitor_log_sid'))
+        $visitor = $this->findByIp($this->request->getClientIp());
+        if(!$visitor)
         {
             return false;
         }
 
+        $this->getSession()->put('visitor_log_sid', $visitor->sid);
         $sid = $this->getSession()->get('visitor_log_sid');
         return $this->visitorRepository->getUseragent($sid);
     }
