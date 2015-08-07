@@ -45,8 +45,8 @@ class VisitorMiddleware
 
         // If visitor is logged in, we try to get the User ID
         $user = null;
-        $usermodel = strtolower(config('visitor-log::usermodel'));
-        if($usermodel == "auth" && Auth::check())
+        $usermodel = strtolower(config('visitor-log.usermodel'));
+        if($usermodel == "laravel" && Auth::check())
         {
             $user = Auth::user()->id;
         }
