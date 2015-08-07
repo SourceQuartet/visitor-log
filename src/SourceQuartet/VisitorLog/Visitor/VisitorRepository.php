@@ -3,11 +3,8 @@ use Carbon\Carbon;
 use SourceQuartet\Exception\InvalidArgumentException;
 use SourceQuartet\VisitorLog\VisitorModel;
 use \SourceQuartet\VisitorLog\Contracts\Visitor\VisitorContract;
+use Illuminate\Database\DatabaseManager;
 
-/**
- * Class VisitorRepository
- * @package SourceQuartet\VisitorLog\Repositories\Visitor
- */
 class VisitorRepository implements VisitorContract
 {
     /**
@@ -16,11 +13,19 @@ class VisitorRepository implements VisitorContract
     private $model;
 
     /**
-     * @param VisitorModel $visitorModel
+     * @var DatabaseManager
      */
-    public function __construct(VisitorModel $visitorModel)
+    private $db;
+
+
+    /**
+     * @param VisitorModel $visitorModel
+     * @param DatabaseManager $databaseManager
+     */public function __construct(VisitorModel $visitorModel,
+                                DatabaseManager $databaseManager)
     {
         $this->model = $visitorModel;
+        $this->db = $databaseManager;
     }
 
     /**
@@ -52,12 +57,13 @@ class VisitorRepository implements VisitorContract
 
     /**
      * @param null $time
-     * @param Carbon $carbon
      * @return mixed
      */
-    public function clear($time = null, Carbon $carbon)
+    public function clear($time = null)
     {
-        return $this->model->where('updated_at', '<', $carbon->now()->addMinute($time))->delete();
+        return $this->db->table($this->model->getTable())
+            ->where('updated_at', '<', date($this->db->getQueryGrammar()->getDateFormat(), strtotime('-'.$time.' minutes')))
+            ->delete();
     }
 
     /**
@@ -108,14 +114,6 @@ class VisitorRepository implements VisitorContract
     public function isGuest()
     {
         return ($this->user == 0);
-    }
-
-    /**
-     * @param $value
-     */
-    public function setSidAttribute($value)
-    {
-        $this->model->setAttribute('sid', $value);
     }
 
     /**

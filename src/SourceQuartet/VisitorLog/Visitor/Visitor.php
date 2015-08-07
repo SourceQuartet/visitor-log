@@ -40,11 +40,10 @@ interface Visitor
 
     /**
      * @param null $time
-     * @param Carbon $carbon
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function clear(Carbon $carbon, $time = null);
+    public function clear($time = null);
 
     /**
      * @return mixed
@@ -74,11 +73,6 @@ interface Visitor
      * @return bool
      */
     public function isUser();
-    /**
-     * @param null $value
-     * @throws InvalidArgumentException
-     */
-    public function setSidAttribute($value = null);
 
     /**
      * Set Agent Detector

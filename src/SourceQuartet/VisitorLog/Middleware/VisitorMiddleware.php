@@ -2,15 +2,22 @@
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use SourceQuartet\VisitorLog\Visitor\VisitorManager;
 use SourceQuartet\VisitorLog\VisitorLogFacade as Visitor;
 
 class VisitorMiddleware
 {
 
+    private $visitorManager;
+    public function __construct(VisitorManager $visitorManager)
+    {
+        $this->visitorManager = $visitorManager;
+    }
+
     public function handle($request, Closure $next)
     {
         // Clearing users and passing Carbon instance and time through
-        Visitor::clear(new Carbon, config('visitor-log::onlinetime'));
+        $this->visitorManager->clear(config('visitor-log::onlinetime'));
 
         // Getting current user path.
         $page = $request->path();
@@ -22,11 +29,19 @@ class VisitorMiddleware
             return $next($request);
         }
 
-        // Generating random visitor ID
-        $sid = str_random(25);
-
         // Attempting to get the current visitor
-        $visitor = Visitor::findCurrent();
+        $visitor = $this->visitorManager->findCurrent();
+
+        // If the attempt to find the current visitor is a failure, we store him into the database
+        if(!$visitor)
+        {
+            $visitor = $this->visitorManager->create([
+                'ip' => $request->getClientIp(),
+                'useragent' => $request->server('HTTP_USER_AGENT'),
+                'sid' => str_random(25),
+                'page' => $page
+            ]);
+        }
 
         // If visitor is logged in, we try to get the User ID
         $user = null;
@@ -36,19 +51,10 @@ class VisitorMiddleware
             $user = Auth::user()->id;
         }
 
-        // If the attempt to find the current visitor is a failure, we store him into the database
-        if(!$visitor)
-        {
-            Visitor::setSidAttribute($sid);
-
-            Visitor::create([
-                'ip' => $request->getClientIp(),
-                'useragent' => $request->server('HTTP_USER_AGENT'),
-                'sid' => $sid,
-                'user' => $user,
-                'page' => $page
-            ]);
-        }
+        $request->session()->put('visitor_log_sid',$visitor->sid);
+        $visitor->user = $user;
+        $visitor->page = $page;
+        $visitor->save();
 
         // Returning the request
         return $next($request);

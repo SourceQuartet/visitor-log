@@ -26,10 +26,9 @@ interface VisitorContract
 
     /**
      * @param null $time
-     * @param Carbon $carbon
      * @return mixed
      */
-    public function clear($time = null, Carbon $carbon);
+    public function clear($time = null);
 
     /**
      * @return mixed
@@ -62,11 +61,6 @@ interface VisitorContract
      * @return bool
      */
     public function isGuest();
-
-    /**
-     * @param $value
-     */
-    public function setSidAttribute($value);
 
     /**
      * @param null $id

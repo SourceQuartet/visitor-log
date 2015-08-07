@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Config\Repository as Config;
-use Illuminate\Session\Store as Session;
+use Illuminate\Http\Request;
 use SourceQuartet\VisitorLog\Useragent;
 use SourceQuartet\VisitorLog\Exception\InvalidArgumentException;
 use DeviceDetector\DeviceDetector;
@@ -28,18 +28,17 @@ class VisitorManager implements Visitor
 
     /**
      * @param VisitorRepository $visitorRepository
-     * @param Session $session
+     * @param Request $request
      * @param Config $config
      */
     public function __construct(VisitorRepository $visitorRepository,
-                                Session $session,
+                                Request $request,
                                 Config $config)
     {
         $this->visitorRepository = $visitorRepository;
-        $this->session = $session;
+        $this->request = $request;
         $this->config = $config;
         $this->setAgentDetector();
-
     }
 
     /**
@@ -56,6 +55,16 @@ class VisitorManager implements Visitor
     public function getAgentDetector()
     {
         return $this->agentDetector;
+    }
+
+    /**
+     * Get session instance.
+     *
+     * @return \Illuminate\Session\Store
+     */
+    public function getSession()
+    {
+        return $this->request->session();
     }
 
     /**
@@ -123,27 +132,30 @@ class VisitorManager implements Visitor
      */
     public function findCurrent()
     {
-        if(!$this->session->has('visitor_log_sid'))
+        $visitor = $this->findByIp($this->request->getClientIp());
+        if(!$visitor)
+        {
             return false;
+        }
 
-        $sid = $this->session->get('visitor_log_sid');
+        $this->getSession()->put('visitor_log_sid', $visitor->sid);
+        $sid = $this->getSession()->get('visitor_log_sid');
         return $this->visitorRepository->find($sid);
     }
 
     /**
      * @param null $time
-     * @param Carbon $carbon
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function clear(Carbon $carbon, $time = null)
+    public function clear($time = null)
     {
         if(is_null($time))
         {
             $this->config->get('visitor-log::onlinetime');
         }
 
-        return $this->visitorRepository->clear($time, $carbon);
+        return $this->visitorRepository->clear($time);
     }
 
     /**
@@ -173,7 +185,7 @@ class VisitorManager implements Visitor
         {
             throw new InvalidArgumentException('The id argument should be a valid integer');
         }
-        return $this->userRepository->findUser($id);
+        return $this->visitorRepository->findUser($id);
     }
 
     /**
@@ -188,7 +200,7 @@ class VisitorManager implements Visitor
             throw new InvalidArgumentException('The ip argument should be a valid IP format and not a private or reserved IP');
         }
 
-        return $this->userRepository->findByIp($ip);
+        return $this->visitorRepository->findByIp($ip);
     }
 
     /**
@@ -200,29 +212,16 @@ class VisitorManager implements Visitor
     }
 
     /**
-     * @param null $value
-     * @throws InvalidArgumentException
-     */
-    public function setSidAttribute($value = null)
-    {
-        if(is_null($value))
-        {
-            throw new InvalidArgumentException('The value argument should not be empty');
-        }
-
-        $this->session->put('visitor_log_sid', $value);
-        return $this->visitorRepository->setSidAttribute($value);
-    }
-
-    /**
      * @return bool
      */
     public function getUseragent()
     {
-        if(!$this->session->has('visitor_log_sid'))
+        if(!$this->getSession()->has('visitor_log_sid'))
+        {
             return false;
+        }
 
-        $sid = $this->session->get('visitor_log_sid');
+        $sid = $this->getSession()->get('visitor_log_sid');
         return $this->visitorRepository->getUseragent($sid);
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use SourceQuartet\VisitorLog\Visitor\VisitorRepository;
+use SourceQuartet\VisitorLog\Visitor\VisitorManager as Visitor;
 
 class VisitorLogServiceProvider extends ServiceProvider {
 
@@ -45,16 +46,14 @@ class VisitorLogServiceProvider extends ServiceProvider {
 			dirname(dirname(__DIR__)).'/config/visitor-log.php', 'visitor-log'
         );
 
-        $this->app->bind('SourceQuartet\VisitorLog\Visitor\Visitor', 'SourceQuartet\VisitorLog\Visitor\VisitorManager');
-
-        $this->app->bind('visitor.repository', function()
+        $this->app->singleton('visitor.repository', function($app)
         {
-            return new VisitorRepository(new VisitorModel());
+            return new VisitorRepository(new VisitorModel(), $app['db']);
         });
 
-        $this->app->bind('visitor', function()
+        $this->app->singleton('visitor', function($app)
         {
-            return new Visitor($this->app['visitor.repository'], $this->app['session.store'], $this->app['config']);
+            return new Visitor($app['visitor.repository'], $app['request'], $app['config']);
         });
 	}
 
