@@ -6,6 +6,13 @@ use SourceQuartet\VisitorLog\Visitor;
 
 interface VisitorContract
 {
+    
+    /**
+     * @param array $columns
+     * @return Collection
+     */
+    public function all(array $columns = ['*']);
+    
     /**
      * @param $id
      * @return mixed
