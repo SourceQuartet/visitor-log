@@ -14,11 +14,6 @@
 			<tr>
 				<td>{{ $visitor->ip }}</td>
 				<td>{{ $visitor->page }}</td>
-				@if($visitor->isUser())
-					<td>{{ Sentry::getUserProvider()->findById($visitor->user)->username }}</td>
-				@else
-					<td>Guest</td>
-				@endif
 				<td>{{ $visitor->updated_at }}</td>
 				<td>{{ $visitor->platform }} -> {{ $visitor->agents }}</td>
 			</tr>
