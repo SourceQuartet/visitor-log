@@ -13,10 +13,10 @@ use Prophecy\Argument;
 class VisitorManagerSpec extends ObjectBehavior
 {
     public function let(VisitorRepository $visitorRepository,
-                        Session $sessionStore,
+                        Request $request,
                         Config $configRepository)
     {
-        $this->beConstructedWith($visitorRepository, $sessionStore, $configRepository);
+        $this->beConstructedWith($visitorRepository, $request, $configRepository);
     }
 
     function it_is_initializable()
@@ -48,16 +48,16 @@ class VisitorManagerSpec extends ObjectBehavior
     }
 
     public function it_find_visitor_when_visitor_sid_isset_on_session(VisitorRepository $visitorRepository,
-                                                                        Session $sessionStore)
+                                                                        Request $request)
     {
         $visitor = new VisitorModel;
         $visitor->sid = str_random(25);
-        $sessionStore->set('visitor_log_sid', $visitor->sid);
+        $request->session()->set('visitor_log_sid', $visitor->sid);
 
-        $sessionStore->has('visitor_log_sid')->shouldBeCalled()
+        $request->session()->has('visitor_log_sid')->shouldBeCalled()
             ->willReturn(true);
 
-        $sessionStore->get('visitor_log_sid')->shouldBeCalled()
+        $request->session()->get('visitor_log_sid')->shouldBeCalled()
             ->willReturn($visitor->sid);
 
         $visitorRepository->find($visitor->sid)->shouldBeCalled()
@@ -66,12 +66,12 @@ class VisitorManagerSpec extends ObjectBehavior
         $this->findCurrent()->shouldReturnAnInstanceOf(VisitorModel::class);
     }
 
-    public function it_find_visitor_when_visitor_sid_is_not_set_on_session(Session $sessionStore)
+    public function it_find_visitor_when_visitor_sid_is_not_set_on_session(Request $request)
     {
         $visitor = new VisitorModel;
         $visitor->sid = str_random(25);
 
-        $sessionStore->has('visitor_log_sid')->shouldBeCalled()
+        $request->session()->has('visitor_log_sid')->shouldBeCalled()
             ->willReturn(false);
 
         $this->findCurrent()->shouldReturn(false);
