@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: SourceQuartet\VisitorLog
+        src_path: src/SourceQuartet/VisitorLog
+        spec_path: spec

@@ -1,4 +1,4 @@
-<?php namespace SourceQuartet\VisitorLog\Repositories\Visitor;
+<?php namespace SourceQuartet\VisitorLog\Visitor;
 
 use Carbon\Carbon;
 use Illuminate\Config\Repository as Config;
@@ -32,6 +32,21 @@ class VisitorManager implements Visitor
         $this->visitorRepository = $visitorRepository;
         $this->session = $session;
         $this->config = $config;
+    }
+
+    /**
+     * @param null $id
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
+    public function find($id = null)
+    {
+        if(is_null($id))
+        {
+            throw new InvalidArgumentException('The argument id should be set');
+        }
+
+        return $this->visitorRepository->find($id);
     }
 
     /**

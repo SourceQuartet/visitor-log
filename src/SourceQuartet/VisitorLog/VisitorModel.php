@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Visitor extends Model {
+class VisitorModel extends Model {
 	protected $table = 'visitors';
 	protected $primaryKey = 'sid';
 	public $incrementing = false;

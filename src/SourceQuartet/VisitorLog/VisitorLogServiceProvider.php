@@ -1,8 +1,7 @@
 <?php namespace SourceQuartet\VisitorLog;
 
 use Illuminate\Support\ServiceProvider;
-use SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager;
-use SourceQuartet\VisitorLog\Repositories\Visitor\VisitorRepository;
+use SourceQuartet\VisitorLog\Visitor\VisitorRepository;
 
 class VisitorLogServiceProvider extends ServiceProvider {
 
@@ -33,8 +32,6 @@ class VisitorLogServiceProvider extends ServiceProvider {
         $this->publishes([
 			dirname(dirname(__DIR__)).'/migrations/' => database_path('migrations')
         ], 'migrations');
-
-		$this->app->bind('SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager', 'SourceQuartet\VisitorLog\Repositories\Visitor\Visitor');
 	}
 
 	/**
@@ -48,10 +45,10 @@ class VisitorLogServiceProvider extends ServiceProvider {
 			dirname(dirname(__DIR__)).'/config/visitor-log.php', 'visitor-log'
         );
 
-        $this->app->bind('SourceQuartet\VisitorLog\Repositories\Visitor\Visitor', 'SourceQuartet\VisitorLog\Repositories\Visitor\VisitorManager');
+        $this->app->bind('SourceQuartet\VisitorLog\Visitor\Visitor', 'SourceQuartet\VisitorLog\Visitor\VisitorManager');
         $this->app->bind('visitor', function()
         {
-            return new VisitorManager(new VisitorRepository(new Visitor()), $this->app['session.store'], $this->app['config']);
+            return new Visitor(new VisitorRepository(new VisitorModel()), $this->app['session.store'], $this->app['config']);
         });
 	}
 

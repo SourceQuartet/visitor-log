@@ -1,4 +1,4 @@
-<?php namespace SourceQuartet\VisitorLog\Repositories\Visitor;
+<?php namespace SourceQuartet\VisitorLog\Visitor;
 
 use Carbon\Carbon;
 use SourceQuartet\Exception\InvalidArgumentException;
@@ -6,6 +6,13 @@ use SourceQuartet\VisitorLog\Useragent;
 
 interface Visitor
 {
+    /**
+     * @param null $id
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
+    public function find($id = null);
+
     /**
      * @param array $attributes
      * @return mixed

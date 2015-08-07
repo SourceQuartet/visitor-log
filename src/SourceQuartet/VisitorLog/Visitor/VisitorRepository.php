@@ -1,8 +1,8 @@
-<?php namespace SourceQuartet\VisitorLog\Repositories\Visitor;
+<?php namespace SourceQuartet\VisitorLog\Visitor;
 use Carbon\Carbon;
 use SourceQuartet\Exception\InvalidArgumentException;
 use SourceQuartet\VisitorLog\Useragent;
-use SourceQuartet\VisitorLog\Visitor as VisitorModel;
+use SourceQuartet\VisitorLog\VisitorModel;
 use \SourceQuartet\VisitorLog\Contracts\Visitor\VisitorContract;
 
 /**
