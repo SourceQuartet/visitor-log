@@ -46,9 +46,15 @@ class VisitorLogServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind('SourceQuartet\VisitorLog\Visitor\Visitor', 'SourceQuartet\VisitorLog\Visitor\VisitorManager');
+
+        $this->app->bind('visitor.repository', function()
+        {
+            return new VisitorRepository(new VisitorModel());
+        });
+
         $this->app->bind('visitor', function()
         {
-            return new Visitor(new VisitorRepository(new VisitorModel()), $this->app['session.store'], $this->app['config']);
+            return new Visitor($this->app['visitor.repository'], $this->app['session.store'], $this->app['config']);
         });
 	}
 
