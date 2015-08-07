@@ -20,7 +20,7 @@ class VisitorManager implements Visitor
     protected $config;
 
     /**
-     * @var DeviceDetector
+     * @var Jenssegers\Agent\Agent
      */
     protected $agentDetector;
 
@@ -45,7 +45,7 @@ class VisitorManager implements Visitor
      */
     public function setAgentDetector()
     {
-        $this->agentDetector = (new Agent())->setUserAgent($this->getUseragent());
+        $this->agentDetector = new Agent;
     }
 
     /**
