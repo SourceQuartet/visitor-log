@@ -10,7 +10,7 @@ interface Visitor
      * @param array $columns
      * @return Collection
      */
-    public function all(array $columns = ['*'])
+    public function all(array $columns = ['*']);
     
     /**
      * @param null $id
