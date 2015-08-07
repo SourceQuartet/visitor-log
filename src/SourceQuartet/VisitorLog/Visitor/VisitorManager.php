@@ -45,7 +45,7 @@ class VisitorManager implements Visitor
      */
     public function setAgentDetector()
     {
-        $this->agentDetector = new Agent();
+        $this->agentDetector = (new Agent())->setUserAgent($this->getUseragent());
     }
 
     /**
