@@ -46,11 +46,11 @@ class VisitorLogServiceProvider extends ServiceProvider
             dirname(dirname(__DIR__)).'/config/visitor-log.php', 'visitor-log'
         );
 
-        $this->app->singleton('visitor.repository', function ($app) {
+        $this->app->singleton('visitor.repository', function($app) {
             return new VisitorRepository(new VisitorModel(), $app['db']);
         });
 
-        $this->app->singleton('visitor', function ($app) {
+        $this->app->singleton('visitor', function($app) {
             return new Visitor($app['visitor.repository'], $app['request'], $app['config']);
         });
     }
