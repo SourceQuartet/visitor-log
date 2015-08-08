@@ -38,7 +38,7 @@
             "src/migrations"
         ],
         "psr-4": {
-            "SourceQuartet\\VisitorLog\\": "src/VisitorLog"
+            "SourceQuartet\\VisitorLog\\": "src/SourceQuartet/VisitorLog"
         }
     },
     "autoload-dev": {
