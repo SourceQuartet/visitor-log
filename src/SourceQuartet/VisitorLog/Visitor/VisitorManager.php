@@ -49,7 +49,7 @@ class VisitorManager implements Visitor
     }
 
     /**
-     * @return DeviceDetector
+     * @return Agent
      */
     public function getAgentDetector()
     {
@@ -110,7 +110,7 @@ class VisitorManager implements Visitor
 
     /**
      * @param array $attributes
-     * @return mixed
+     * @return VisitorRepository
      * @throws InvalidArgumentException
      */
     public function create(array $attributes)
@@ -124,7 +124,7 @@ class VisitorManager implements Visitor
 
     /**
      * @param array $attributes
-     * @return mixed
+     * @return VisitorRepository
      * @throws InvalidArgumentException
      */
     public function updateOrCreate(array $attributes)

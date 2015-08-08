@@ -12,7 +12,7 @@ class VisitorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('visitors', function (Blueprint $table) {
+        Schema::create('visitors', function(Blueprint $table) {
             $table->string('sid', 25);
             $table->string('ip', 15);
             $table->string('page', 50);
