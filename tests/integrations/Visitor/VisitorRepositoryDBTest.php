@@ -15,6 +15,7 @@ class VisitorRepositoryDBTest extends TestCaseDB
     {
         parent::setUp();
         $this->visitorRepository = app('visitor.repository');
+        app('config')->set('session.driver', 'array');
     }
 
     /** @test */
