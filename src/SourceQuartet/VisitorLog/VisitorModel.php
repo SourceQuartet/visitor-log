@@ -16,5 +16,6 @@ class VisitorModel extends Model
     {
         $this->attributes['sid'] = $value;
         Session::put('visitor_log_sid', $value);
+        Session::save();
     }
 }
