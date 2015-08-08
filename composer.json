@@ -38,7 +38,7 @@
             "src/migrations"
         ],
         "psr-4": {
-            "SourceQuartet\\VisitorLog": "src/VisitorLog"
+            "SourceQuartet\\VisitorLog\\": "src/VisitorLog"
         }
     },
     "autoload-dev": {
@@ -49,5 +49,5 @@
         "SourceQuartet\\Tests\\": "tests/models"
       }
     },
-    "minimum-stability": "stable"
+    "license": "MIT"
 }
