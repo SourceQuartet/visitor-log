@@ -1,5 +1,5 @@
 # VisitorLog for Laravel 5
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/badges/build.png?b=master)](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/badges/build.png?b=master)](https://scrutinizer-ci.com/g/SourceQuartet/visitor-log/build-status/master)[![Code Climate](https://codeclimate.com/github/SourceQuartet/visitor-log/badges/gpa.svg)](https://codeclimate.com/github/SourceQuartet/visitor-log)
 
 
 A K.I.S.S package to log your Visitor for your Laravel 5 apps.
@@ -144,9 +144,34 @@ Visitor::getAgentDetector()->is('OS X'); // Check if UserAgent is OS X
 Visitor::getAgentDetector()->isAndroidOS();
 Visitor::getAgentDetector()->isNexus();
 Visitor::getAgentDetector()->isSafari();
-Visitor::getAgentDetector()-isMobile();
-Visitor::getAgentDetector()-isTablet();
+Visitor::getAgentDetector()->isMobile();
+Visitor::getAgentDetector()->isTablet();
 ```
+
+### Setting up an UserAgent
+Sometime, you may need to foreach or to set manually the Useragent to analyze, so it's quite simple :
+```php
+$visitors = Visitor::all();
+foreach($visitors as $visitor)
+{
+    Visitor::getAgentDetector()->setAgentToDetector($visitor->useragent);
+    Visitor::getAgentDetector()->isAndroidOS();
+}
+```
+Or in the case if you need to load the current Useragent :
+```php
+// Just leave it empty
+Visitor::getAgentDetector()->setAgentToDetector();
+Visitor::getAgentDetector()->isAndroidOS();
+```php
+
+Or in the case of a single loading
+```php
+$visitor = Visitor::findUser($id);
+Visitor::getAgentDetector()->setAgentToDetector($visitor->useragent);
+Visitor::getAgentDetector()->isAndroidOS();
+```
+
 ### Others functionnality of the AgentDetector using MobileDetect and jenssegers\laravel-agent :
 
 Please check out [jenssenger\laravel-agent docs](https://github.com/jenssegers/laravel-agent/blob/master/README.md) for a more complete documentation on how to use this UserAgent detector, if you want to use inbuild of VisitorLog, just replace `Agent::method()` by `Visitor::getAgentDetector()->method()` it's not simpler, and if you want use directely the Agent Facade, register it as `jenssenger\laravel-agent` is a dependency of this package and so, you just need to follow the installation inscruction to use it out of the scope of this package :+1:
