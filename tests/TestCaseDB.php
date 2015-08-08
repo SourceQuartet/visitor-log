@@ -43,6 +43,8 @@ abstract class TestCaseDB extends TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ));
+        
+        $app['config']->set('session.driver', 'array');
     }
     /**
      * Rollback transactions after each test.
