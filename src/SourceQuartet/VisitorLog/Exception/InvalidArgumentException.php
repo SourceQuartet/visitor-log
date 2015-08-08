@@ -2,5 +2,4 @@
 
 class InvalidArgumentException extends \Exception
 {
-
 }

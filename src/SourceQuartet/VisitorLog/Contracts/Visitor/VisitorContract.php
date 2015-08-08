@@ -6,7 +6,6 @@ use SourceQuartet\VisitorLog\Visitor;
 
 interface VisitorContract
 {
-    
     /**
      * @param array $columns
      * @return Collection

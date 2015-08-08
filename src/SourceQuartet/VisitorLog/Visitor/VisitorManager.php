@@ -4,6 +4,7 @@ use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 use SourceQuartet\VisitorLog\Exception\InvalidArgumentException;
+
 class VisitorManager implements Visitor
 {
     /**
@@ -20,7 +21,7 @@ class VisitorManager implements Visitor
     protected $config;
 
     /**
-     * @var Jenssegers\Agent\Agent
+     * @var \Jenssegers\Agent\Agent
      */
     protected $agentDetector;
 
@@ -37,7 +38,6 @@ class VisitorManager implements Visitor
         $this->request = $request;
         $this->config = $config;
         $this->setAgentDetector();
-
     }
 
     /**
@@ -57,6 +57,19 @@ class VisitorManager implements Visitor
     }
 
     /**
+     * @param null $userAgent
+     * @return null|string
+     */
+    public function setAgentToDetector($userAgent = null)
+    {
+        if (is_null($userAgent)) {
+            $this->agentDetector->setUserAgent($this->getUseragent());
+        }
+
+        return $this->agentDetector->setUserAgent($userAgent);
+    }
+
+    /**
      * Get session instance.
      *
      * @return \Illuminate\Session\Store
@@ -65,19 +78,20 @@ class VisitorManager implements Visitor
     {
         return $this->request->session();
     }
-    
+
+
     /**
      * @param array $columns
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Collection|static[]
+     * @throws InvalidArgumentException
      */
     public function all(array $columns = ['*'])
     {
-        if(!is_array($id))
-        {
+        if (!is_array($id)) {
             throw new InvalidArgumentException('The argument columns should be an array');
         }
         
-        $this->visitorRepository()->all($columns);
+        return $this->visitorRepository->all($columns);
     }
 
     /**
@@ -87,8 +101,7 @@ class VisitorManager implements Visitor
      */
     public function find($id = null)
     {
-        if(is_null($id))
-        {
+        if (is_null($id)) {
             throw new InvalidArgumentException('The argument id should be set');
         }
 
@@ -102,8 +115,7 @@ class VisitorManager implements Visitor
      */
     public function create(array $attributes)
     {
-        if(!is_array($attributes))
-        {
+        if (!is_array($attributes)) {
             throw new InvalidArgumentException('The attributes argument should be an array');
         }
 
@@ -117,8 +129,7 @@ class VisitorManager implements Visitor
      */
     public function updateOrCreate(array $attributes)
     {
-        if(!is_array($attributes))
-        {
+        if (!is_array($attributes)) {
             throw new InvalidArgumentException('The attributes argument should be an array');
         }
 
@@ -133,7 +144,7 @@ class VisitorManager implements Visitor
     {
         $user = $this->visitorRepository->findUser($id);
 
-        if(count($user) == 0){
+        if (count($user) == 0) {
             return false;
         }
 
@@ -146,8 +157,7 @@ class VisitorManager implements Visitor
     public function findCurrent()
     {
         $visitor = $this->findByIp($this->request->getClientIp());
-        if(!$visitor)
-        {
+        if (!$visitor) {
             return false;
         }
 
@@ -163,8 +173,7 @@ class VisitorManager implements Visitor
      */
     public function clear($time = null)
     {
-        if(is_null($time))
-        {
+        if (is_null($time)) {
             $this->config->get('visitor-log::onlinetime');
         }
 
@@ -194,8 +203,7 @@ class VisitorManager implements Visitor
      */
     public function findUser($id)
     {
-        if(!is_int($id))
-        {
+        if (!is_int($id)) {
             throw new InvalidArgumentException('The id argument should be a valid integer');
         }
         return $this->visitorRepository->findUser($id);
@@ -208,8 +216,7 @@ class VisitorManager implements Visitor
      */
     public function findByIp($ip)
     {
-        if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE))
-        {
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
             throw new InvalidArgumentException('The ip argument should be a valid IP format and not a private or reserved IP');
         }
 
@@ -238,8 +245,7 @@ class VisitorManager implements Visitor
     public function getUseragent()
     {
         $visitor = $this->findByIp($this->request->getClientIp());
-        if(!$visitor)
-        {
+        if (!$visitor) {
             return false;
         }
 

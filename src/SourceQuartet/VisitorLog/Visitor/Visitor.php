@@ -11,6 +11,12 @@ interface Visitor
      * @return Collection
      */
     public function all(array $columns = ['*']);
+
+    /**
+     * @param null $userAgent
+     * @return null|string
+     */
+    public function setAgentToDetector($userAgent = null);
     
     /**
      * @param null $id

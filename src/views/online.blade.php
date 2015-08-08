@@ -14,10 +14,10 @@
 			<tr>
 				<td>{{ $visitor->ip }}</td>
 				<td>{{ $visitor->page }}</td>
-				@if(!is_null($visitor->user))	
--					<td>{{ $visitor->user }}</td>		
--				@else		
--					<td>Guest</td>		
+				@if(!is_null($visitor->user))
+-					<td>{{ $visitor->user }}</td>
+-				@else
+-					<td>Guest</td>
 -				@endif
 				<td>{{ $visitor->updated_at }}</td>
 				<td>{{ $visitor->useragent }}</td>

@@ -1,4 +1,5 @@
 <?php namespace SourceQuartet\VisitorLog\Middleware;
+
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\Facades\Auth;
@@ -7,7 +8,6 @@ use SourceQuartet\VisitorLog\VisitorLogFacade as Visitor;
 
 class VisitorMiddleware
 {
-
     private $visitorManager;
     public function __construct(VisitorManager $visitorManager)
     {
@@ -24,8 +24,7 @@ class VisitorMiddleware
         $ignore = config('visitor-log::ignore');
 
         // If this path is ignored, send the request.
-        if(is_array($ignore) && in_array($page, $ignore))
-        {
+        if (is_array($ignore) && in_array($page, $ignore)) {
             return $next($request);
         }
 
@@ -33,8 +32,7 @@ class VisitorMiddleware
         $visitor = $this->visitorManager->findCurrent();
 
         // If the attempt to find the current visitor is a failure, we store him into the database
-        if(!$visitor)
-        {
+        if (!$visitor) {
             $visitor = $this->visitorManager->create([
                 'ip' => $request->getClientIp(),
                 'useragent' => $request->server('HTTP_USER_AGENT'),
@@ -46,12 +44,11 @@ class VisitorMiddleware
         // If visitor is logged in, we try to get the User ID
         $user = null;
         $usermodel = strtolower(config('visitor-log.usermodel'));
-        if($usermodel == "laravel" && Auth::check())
-        {
+        if ($usermodel == "laravel" && Auth::check()) {
             $user = Auth::user()->id;
         }
 
-        $request->session()->put('visitor_log_sid',$visitor->sid);
+        $request->session()->put('visitor_log_sid', $visitor->sid);
         $visitor->user = $user;
         $visitor->page = $page;
         $visitor->save();

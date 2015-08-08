@@ -2,5 +2,4 @@
 
 class UserNotFoundException extends \Exception
 {
-
 }

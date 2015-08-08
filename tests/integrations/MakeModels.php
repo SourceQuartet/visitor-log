@@ -1,6 +1,8 @@
 <?php
 use Laracasts\TestDummy\Factory;
-trait MakeModels {
+
+trait MakeModels
+{
     /**
      * Create Visitor
      *
@@ -9,7 +11,7 @@ trait MakeModels {
      */
     protected function createVisitor(array $data = [])
     {
-        return Factory::create('SourceQuartet\VisitorLog\VisitorModel',$data);
+        return Factory::create('SourceQuartet\VisitorLog\VisitorModel', $data);
     }
     /**
      * Create User
@@ -19,6 +21,6 @@ trait MakeModels {
      */
     protected function createUser(array $data = [])
     {
-        return Factory::create('SourceQuartet\Tests\Models\User',$data);
+        return Factory::create('SourceQuartet\Tests\Models\User', $data);
     }
 }

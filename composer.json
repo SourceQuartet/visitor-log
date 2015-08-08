@@ -37,8 +37,8 @@
         "classmap": [
             "src/migrations"
         ],
-        "psr-0": {
-            "SourceQuartet\\VisitorLog": "src/"
+        "psr-4": {
+            "SourceQuartet\\VisitorLog": "src/VisitorLog"
         }
     },
     "autoload-dev": {

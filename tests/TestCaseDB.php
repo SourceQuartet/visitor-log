@@ -1,9 +1,11 @@
 <?php
 use Orchestra\Testbench\TestCase;
+
 /**
  * Class TestCaseDB
  */
-abstract class TestCaseDB extends TestCase {
+abstract class TestCaseDB extends TestCase
+{
     /**
      * @param \Illuminate\Foundation\Application $app
      * @return array
@@ -22,10 +24,10 @@ abstract class TestCaseDB extends TestCase {
         $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
         app('db')->beginTransaction();
         $this->migrate($artisan);
-        $this->migrate($artisan,'/../../../../tests/migrations');
+        $this->migrate($artisan, '/../../../../tests/migrations');
         // Set up the User Test Model
-        app('config')->set('visitor-log.model','SourceQuartet\VisitorLog\VisitorModel');
-        app('config')->set('visitor-log.user.model','SourceQuartet\Tests\Models\User');
+        app('config')->set('visitor-log.model', 'SourceQuartet\VisitorLog\VisitorModel');
+        app('config')->set('visitor-log.user.model', 'SourceQuartet\Tests\Models\User');
     }
     /**
      * Define environment setup.
@@ -65,7 +67,7 @@ abstract class TestCaseDB extends TestCase {
      * @param        $artisan
      * @param string $path
      */
-    private function migrate($artisan,$path = '/../../../../src/migrations')
+    private function migrate($artisan, $path = '/../../../../src/migrations')
     {
         $artisan->call('migrate', [
             '--database' => 'testbench',

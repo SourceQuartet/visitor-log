@@ -1,4 +1,5 @@
 <?php namespace SourceQuartet\VisitorLog\Visitor;
+
 use Carbon\Carbon;
 use SourceQuartet\Exception\InvalidArgumentException;
 use SourceQuartet\VisitorLog\VisitorModel;
@@ -28,10 +29,11 @@ class VisitorRepository implements VisitorContract
         $this->model = $visitorModel;
         $this->db = $databaseManager;
     }
-    
+
+
     /**
      * @param array $columns
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Collection|static[]
      */
     public function all(array $columns = ['*'])
     {

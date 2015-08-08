@@ -1,5 +1,5 @@
 <?php
-$factory('SourceQuartet\VisitorLog\VisitorModel',[
+$factory('SourceQuartet\VisitorLog\VisitorModel', [
     'sid' => $faker->text(25),
     'ip' => $faker->ipv4,
     'page' => $faker->url,
@@ -8,7 +8,7 @@ $factory('SourceQuartet\VisitorLog\VisitorModel',[
     'updated_at' => $faker->dateTime,
 ]);
 
-$factory('SourceQuartet\Tests\User',[
+$factory('SourceQuartet\Tests\User', [
     'name' => $faker->name,
     'email' => $faker->email,
     'password' => $faker->password,

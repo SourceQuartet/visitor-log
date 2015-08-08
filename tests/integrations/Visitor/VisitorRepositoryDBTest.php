@@ -18,10 +18,10 @@ class VisitorRepositoryDBTest extends TestCaseDB
     }
 
     /** @test */
-    function it_add_a_new_visitor()
+    public function it_add_a_new_visitor()
     {
         $visitorData = Factory::build('SourceQuartet\VisitorLog\VisitorModel');
         $visitor = $this->visitorRepository->create($visitorData->toArray());
-        $this->assertEquals($visitorData->sid,$visitor->sid);
+        $this->assertEquals($visitorData->sid, $visitor->sid);
     }
 }

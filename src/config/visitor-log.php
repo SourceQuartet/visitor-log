@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'onlinetime' => 15,
-	'usermodel' => 'Laravel',
-	'ignore' => [],
+    'onlinetime' => 15,
+    'usermodel' => 'Laravel',
+    'ignore' => [],
 ];
