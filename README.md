@@ -11,7 +11,7 @@ It also includes [jenssegers/laravel-agent](https://github.com/jenssegers/larave
 It is based on the excellent base from [JN-Jones/visitor-log](https://github.com/JN-Jones/visitor-log), completely reworked for Laravel 5 using Repositories pattern and Middleware.
 
 ## Installation
-
+Little thing before anything, the Laravel 'file' driver is known to have no-persistency in session storing, you should store your session through another driver, however, this package has been made to work and override session sid by IP in order to make file driver persistant, it's not ideal.. but it works.
 ```
 $ composer require sourcequartet/visitor-log
 $ php composer update
