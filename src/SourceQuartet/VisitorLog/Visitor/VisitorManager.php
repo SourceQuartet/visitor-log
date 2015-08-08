@@ -87,7 +87,7 @@ class VisitorManager implements Visitor
      */
     public function all(array $columns = ['*'])
     {
-        if (!is_array($id)) {
+        if (!is_array($columns)) {
             throw new InvalidArgumentException('The argument columns should be an array');
         }
         
@@ -162,6 +162,7 @@ class VisitorManager implements Visitor
         }
 
         $this->getSession()->put('visitor_log_sid', $visitor->sid);
+        $this->getSession()->save();
         $sid = $this->getSession()->get('visitor_log_sid');
         return $this->visitorRepository->find($sid);
     }
@@ -250,6 +251,7 @@ class VisitorManager implements Visitor
         }
 
         $this->getSession()->put('visitor_log_sid', $visitor->sid);
+        $this->getSession()->save();
         $sid = $this->getSession()->get('visitor_log_sid');
         return $this->visitorRepository->getUseragent($sid);
     }
