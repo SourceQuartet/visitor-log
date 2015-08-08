@@ -17,11 +17,11 @@ class VisitorMiddleware
     public function handle($request, Closure $next)
     {
         // Clearing users and passing Carbon instance and time through
-        $this->visitorManager->clear(config('visitor-log::onlinetime'));
+        $this->visitorManager->clear(config('visitor-log.onlinetime'));
 
         // Getting current user path.
         $page = $request->path();
-        $ignore = config('visitor-log::ignore');
+        $ignore = config('visitor-log.ignore');
 
         // If this path is ignored, send the request.
         if (is_array($ignore) && in_array($page, $ignore)) {
